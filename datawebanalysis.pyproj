@@ -44,10 +44,12 @@
     <Folder Include="datawebanalysis\static\" />
     <Folder Include="datawebanalysis\static\content\" />
     <Folder Include="datawebanalysis\static\fonts\" />
+    <Folder Include="datawebanalysis\static\img\" />
     <Folder Include="datawebanalysis\static\scripts\" />
     <Folder Include="datawebanalysis\templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="datawebanalysis\static\img\calendar-date.svg" />
     <Content Include="datawebanalysis\static\scripts\Big3Common.js" />
     <Content Include="requirements.txt" />
     <Content Include="datawebanalysis\static\content\bootstrap.css" />
