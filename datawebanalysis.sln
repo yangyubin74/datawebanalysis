@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35431.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "datawebanalysis", "datawebanalysis.pyproj", "{FAAF0B9C-CA97-496D-924E-5D66BC188C11}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAAF0B9C-CA97-496D-924E-5D66BC188C11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAAF0B9C-CA97-496D-924E-5D66BC188C11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAAF0B9C-CA97-496D-924E-5D66BC188C11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAAF0B9C-CA97-496D-924E-5D66BC188C11}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {710D3AA0-9086-4B90-9689-FE6715523695}
+	EndGlobalSection
+EndGlobal
