@@ -3,7 +3,7 @@ import pandas as pd
 import common as com
 import sqlgen as sql
 
-file_path = 'D:\\analysis_data.csv'
+file_path = 'D:\\work\\analysis_data.csv'
 
 columns = [
     'bld_name', 'flr_name', 'whole_no_name', 'whole_code', 'whole_name',

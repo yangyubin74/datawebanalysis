@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 
 
-database_name="yubin_data.db"
+database_name="D:\\work\\yubin_data.db"
 #데이터베이스 Connection
 def connection_cursor():
     connection = sqlite3.connect(database_name)   
