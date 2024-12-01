@@ -45,11 +45,15 @@ def get_build_sales():
 
     return filtered_df
 
+#월별 매출 동향
 def get_build_sales_month():
     df=sql.select_common_data()
-    filtered_df=df[['bld_name','buy_amt','order_dt']]
+    
     df['buy_amt'] = df['buy_amt'].astype('int64')
     df['order_dt'] = pd.to_datetime(df['order_dt'])
-    filtered_df = df.groupby(['bld_name', 'order_dt'], as_index=False)['buy_amt'].sum()
-    print(filtered_df)
+    df['order_month'] =pd.to_datetime(df['order_dt']).dt.to_period('M')
+
+    filtered_df=df[['bld_name','buy_amt','order_month','order_dt']]
+    filtered_df = df.groupby(['bld_name', 'order_month'], as_index=False)['buy_amt'].sum()
+    print("===>",filtered_df)
     return filtered_df

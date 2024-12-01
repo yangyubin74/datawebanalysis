@@ -40,7 +40,7 @@ def getorgmember():
             )
         barchart=com.genbarchart(build_member,'bld_name','count','','상가','도매수')
         barchart2=com.genbarchart(build_sales,'bld_name','buy_amt','','상가','매출(단위:백억)',12,6)
-        linechart=com.genlinechart(build_sales_month,'bld_name','order_dt','bld_name','월','매출(단위:백억)',12,6)
+        linechart=com.genlinechart(build_sales_month,'order_month','buy_amt','bld_name','년/월','매출(단위:백억)',14,8)
         result={
                  "result":"success",
                  "piechart":piechart,

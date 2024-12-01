@@ -122,20 +122,24 @@ def genbarchart(df,x_colomn,y_colum,Title,x_lable,y_label,with_size=8,height_siz
 
 def genlinechart(df,x_colomn,y_colum,groupName,x_lable,y_label,with_size=8,height_size=6):
     """
-     x_colomn: order_dt
+     x_colomn: order_month
      y_colum: buy_amt
      groupName: bld_name
     """
+    if pd.api.types.is_period_dtype(df[x_colomn]):
+        df[x_colomn] = df[x_colomn].dt.to_timestamp()
 
     plt.figure(figsize=(10, 6))
-    for bld_name, group in df.groupby('bld_name'):
-        plt.plot(group['order_dt'], group['buy_amt'], marker='o', label=bld_name)
+    for bld_name, group in df.groupby(groupName):
+        plt.plot(group[x_colomn], group[y_colum], marker='o', label=bld_name)
 
-    plt.title('Building-wise Sales Over Time')
-    plt.xlabel('Order Date')
-    plt.ylabel('Buy Amount')
+    
+    plt.xlabel(x_lable)
+    plt.ylabel(y_label)
     plt.xticks(rotation=45)
-    plt.legend(title='Building')
+    
+    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=len(df['bld_name'].unique()))
+    plt.subplots_adjust(bottom=0.3)
     plt.grid(True)
     plt.tight_layout()
     line_chart=base64imageGeneration(plt)
