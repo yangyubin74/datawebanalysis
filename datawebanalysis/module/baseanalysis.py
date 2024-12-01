@@ -36,3 +36,20 @@ def get_build_member():
     grouped_result = df.groupby(['bld_name']).size().reset_index(name='count')
     return grouped_result
 
+#건물별 매출 현황
+def get_build_sales():
+    df=sql.select_common_data()
+    filtered_df=df[['bld_name','buy_amt']]
+    df['buy_amt'] = df['buy_amt'].astype('int64')
+    filtered_df = df.groupby('bld_name', as_index=False)['buy_amt'].sum()
+
+    return filtered_df
+
+def get_build_sales_month():
+    df=sql.select_common_data()
+    filtered_df=df[['bld_name','buy_amt','order_dt']]
+    df['buy_amt'] = df['buy_amt'].astype('int64')
+    df['order_dt'] = pd.to_datetime(df['order_dt'])
+    filtered_df = df.groupby(['bld_name', 'order_dt'], as_index=False)['buy_amt'].sum()
+    print(filtered_df)
+    return filtered_df

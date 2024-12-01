@@ -90,16 +90,11 @@ def genpiechart(labels, sizes, Title="Pie Chart"):
     if Title !="" :
         plt.title(Title, fontsize=16)
     
-    buffer = BytesIO()
-    plt.savefig(buffer, format='png')
-    buffer.seek(0)
-    image_base64_piechart = base64.b64encode(buffer.read()).decode('utf-8')
-    buffer.close()           
-
+    piechart=base64imageGeneration(plt)
     plt.close()              
-    return image_base64_piechart
+    return piechart
 
-def genbarchart(df,x_colomn,y_colum,Title,x_lable,y_label):
+def genbarchart(df,x_colomn,y_colum,Title,x_lable,y_label,with_size=8,height_size=6):
     """
     x_colomns=df["bld_name"]
     y_colums==df["count"]
@@ -107,7 +102,7 @@ def genbarchart(df,x_colomn,y_colum,Title,x_lable,y_label):
 
     random_colors = ['#%06X' % random.randint(0, 0xFFFFFF) for _ in range(len(df))]
 
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(with_size,height_size))
     plt.bar(df[x_colomn], df[y_colum], color=random_colors)
 
     if Title !="" :
@@ -119,13 +114,40 @@ def genbarchart(df,x_colomn,y_colum,Title,x_lable,y_label):
     plt.yticks(fontsize=10) 
     
     plt.tight_layout()
-    plt.show()
-    
+        
+    barchart=base64imageGeneration(plt)
+    plt.close()         
+       
+    return barchart
+
+def genlinechart(df,x_colomn,y_colum,groupName,x_lable,y_label,with_size=8,height_size=6):
+    """
+     x_colomn: order_dt
+     y_colum: buy_amt
+     groupName: bld_name
+    """
+
+    plt.figure(figsize=(10, 6))
+    for bld_name, group in df.groupby('bld_name'):
+        plt.plot(group['order_dt'], group['buy_amt'], marker='o', label=bld_name)
+
+    plt.title('Building-wise Sales Over Time')
+    plt.xlabel('Order Date')
+    plt.ylabel('Buy Amount')
+    plt.xticks(rotation=45)
+    plt.legend(title='Building')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.close()            
+    line_chart=base64imageGeneration(plt)
+    return line_chart
+
+# base64코드 생성기
+def base64imageGeneration(plt):
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
     buffer.seek(0)
-    image_base64_piechart = base64.b64encode(buffer.read()).decode('utf-8')
+    image_base64_chart = base64.b64encode(buffer.read()).decode('utf-8')
     buffer.close()           
-
-    plt.close()              
-    return image_base64_piechart
+              
+    return image_base64_chart

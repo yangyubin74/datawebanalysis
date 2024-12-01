@@ -120,3 +120,8 @@ input[type="checkbox"].input-validation-error {
     background-color: black;
     color: white
 }
+.row {
+    border-bottom: 2px solid #ddd; /* 아래쪽에 구분선 */
+    margin-bottom: 20px; /* 구분선과 다음 콘텐츠 간의 간격 */
+    padding-bottom: 20px;
+}

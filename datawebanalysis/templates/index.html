@@ -3,7 +3,7 @@
 {% block content %}
 
 <div class="text-center">
-    <h1>Flask Dashboard</h1>
+    <h1>Dongdaemun Mall Dashboard</h1>
 </div>
 <div class="container">
     <div class="row">
@@ -14,6 +14,18 @@
         <div class="col-md-6 text-center">
             <h3>상가별분포</h3>
             <img id="img_buildmember" style="width: 100%; height: 500px; display: none" class="img-fluid" alt="Building Members Chart" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>건물별 매출현황</h3>
+            <img id="img_buildsales" style="display: none" class="img-fluid" alt="Organization Members Chart" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>건물별 매출추이</h3>
+            <img id="img_buildsales_month" style="display: none" class="img-fluid" alt="Organization Members Chart" />
         </div>
     </div>
 </div>
@@ -32,9 +44,14 @@
                 console.log("Data", Data)
                 const piechart = Data.piechart;
                 const barchart = Data.barchart;
+                const barchart2 = Data.barchart2;
+                const linechart = Data.linechart;
                 $("#img_orgmember").attr("src", "data:image/png;base64," + piechart);
                 $("#img_buildmember").attr("src", "data:image/png;base64," + barchart);
-                $("#img_orgmember,#img_buildmember").show();
+                $("#img_buildsales").attr("src", "data:image/png;base64," + barchart2);
+                $("#img_buildsales_month").attr("src", "data:image/png;base64," + linechart);
+
+                $("#img_orgmember,#img_buildmember,#img_buildsales ,#img_buildsales_month").show();
             }
             else {
                 console.log(Data.error);

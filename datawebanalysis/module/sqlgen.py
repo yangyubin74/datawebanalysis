@@ -2,7 +2,13 @@ import sqlite3
 import pandas as pd
 
 
+
 database_name="D:\\work\\yubin_data.db"
+columns=[
+        'bld_name', 'flr_name', 'whole_no_name', 'whole_code', 'whole_name',
+        'org_nm', 'union_uid', 'order_dt', 'buy_amt', 'return_yn', 'refund_yn'
+    ]
+global_data = None
 #데이터베이스 Connection
 def connection_cursor():
     connection = sqlite3.connect(database_name)   
@@ -47,7 +53,7 @@ def insert_db(df):
     connection.commit()
     connection.close()
 
-#플랫폼 가입자와 비가입자 조회
+#노트가입자와 플랫폼가입자 조회
 def select_org_member():
      connection, cursor = connection_cursor()
      select_query = """
@@ -56,13 +62,33 @@ def select_org_member():
      cursor.execute(select_query)
      rows = cursor.fetchall()
      return rows
-
+#상가별 노트가입자와 플랫폼가입자 조회
 def select_build_member():
      connection, cursor = connection_cursor()
      select_query = """
-       select bld_name,whole_name  from data  group by bld_name,whole_name, org_nm 
+       select bld_name, whole_name  from data  group by bld_name,whole_name, org_nm 
      """
      cursor.execute(select_query)
      rows = cursor.fetchall()
      
      return rows
+
+#상가별 매출 현황
+def select_common_data():
+     global global_data
+     
+     if  global_data is None :
+         connection, cursor = connection_cursor()
+         select_query = """
+           select bld_name, flr_name, whole_no_name, whole_code, whole_name,
+                          org_nm, union_uid, order_dt, buy_amt, return_yn, refund_yn  from data
+         """
+         cursor.execute(select_query)
+         rows = cursor.fetchall()
+         if not rows:
+            global_data=pd.DataFrame(columns=columns)
+         
+         global_data=pd.DataFrame(rows,columns=columns)
+         
+     return global_data   
+   
