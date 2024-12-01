@@ -138,8 +138,9 @@ def genlinechart(df,x_colomn,y_colum,groupName,x_lable,y_label,with_size=8,heigh
     plt.legend(title='Building')
     plt.grid(True)
     plt.tight_layout()
-    plt.close()            
     line_chart=base64imageGeneration(plt)
+    plt.close()       
+    
     return line_chart
 
 # base64코드 생성기
