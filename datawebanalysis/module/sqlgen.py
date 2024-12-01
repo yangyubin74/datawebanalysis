@@ -9,13 +9,13 @@ columns=[
         'org_nm', 'union_uid', 'order_dt', 'buy_amt', 'return_yn', 'refund_yn'
     ]
 global_data = None
-#데이터베이스 Connection
+#     故  決  Connection
 def connection_cursor():
     connection = sqlite3.connect(database_name)   
     cursor = connection.cursor()
     return connection,cursor
 
-#DB 생성
+#DB     
 def create_db():
 
     connection,cursor=connection_cursor()
@@ -39,7 +39,7 @@ def create_db():
     connection.commit()
     connection.close()
 
-#DB 입력
+#DB  韜 
 def insert_db(df):
     connection, cursor = connection_cursor()
     insert_query = """
@@ -53,7 +53,7 @@ def insert_db(df):
     connection.commit()
     connection.close()
 
-#노트가입자와 플랫폼가입자 조회
+#  트     悶   첨            회
 def select_org_member():
      connection, cursor = connection_cursor()
      select_query = """
@@ -62,7 +62,7 @@ def select_org_member():
      cursor.execute(select_query)
      rows = cursor.fetchall()
      return rows
-#상가별 노트가입자와 플랫폼가입자 조회
+# 箚『    트     悶   첨            회
 def select_build_member():
      connection, cursor = connection_cursor()
      select_query = """
@@ -73,7 +73,7 @@ def select_build_member():
      
      return rows
 
-#상가별 매출 현황
+# 箚『         황
 def select_common_data():
      global global_data
      
