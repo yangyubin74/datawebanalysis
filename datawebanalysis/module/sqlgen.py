@@ -51,10 +51,18 @@ def insert_db(df):
 def select_org_member():
      connection, cursor = connection_cursor()
      select_query = """
-       select org_nm from data
+       select whole_name,org_nm  from data
      """
      cursor.execute(select_query)
      rows = cursor.fetchall()
-     df = pd.DataFrame(rows, columns=['org_nm'])
-     df['org_nm'] = df['org_nm'].apply(lambda x: 'Y' if x != 'N' else x)
-     return df
+     return rows
+
+def select_build_member():
+     connection, cursor = connection_cursor()
+     select_query = """
+       select bld_name,whole_name  from data  group by bld_name,whole_name, org_nm 
+     """
+     cursor.execute(select_query)
+     rows = cursor.fetchall()
+     
+     return rows

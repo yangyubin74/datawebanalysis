@@ -1,8 +1,13 @@
 import pandas as pd
+import matplotlib
+matplotlib.use('Agg')  # 비GUI 백엔드 설정
 import matplotlib.pyplot as plt
 from scipy.stats import zscore
 import seaborn as sns
 from sklearn.ensemble import IsolationForest
+import base64
+from io import BytesIO
+import random
 
 
 plt.rcParams['font.family'] = 'Malgun Gothic'  # Windows의 경우 '맑은 고딕'
@@ -68,3 +73,59 @@ def isolationforest(df,column):
     anomalies = df[df['anomaly'] == -1]
     user_print('Isolation Forest Detected Anomalies','*',anomalies)
 
+#파이차트 생성
+def genpiechart(labels, sizes, Title="Pie Chart"):
+    """
+    labels: 각 항목의 이름 리스트 (예: ['N', 'Not N'])
+    sizes: 각 항목의 크기 리스트 (예: [3, 4])
+    title: 파이 차트의 제목 (기본값: "Pie Chart")
+    """
+    plt.figure(figsize=(6, 6))
+    plt.pie(
+        sizes,
+        labels=labels,
+        autopct=lambda p: f'{p:.1f}%' if p > 0 else '',  # 퍼센트 레이블
+        startangle=90
+    )
+    if Title !="" :
+        plt.title(Title, fontsize=16)
+    
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_base64_piechart = base64.b64encode(buffer.read()).decode('utf-8')
+    buffer.close()           
+
+    plt.close()              
+    return image_base64_piechart
+
+def genbarchart(df,x_colomn,y_colum,Title,x_lable,y_label):
+    """
+    x_colomns=df["bld_name"]
+    y_colums==df["count"]
+    """
+
+    random_colors = ['#%06X' % random.randint(0, 0xFFFFFF) for _ in range(len(df))]
+
+    plt.figure(figsize=(8, 6))
+    plt.bar(df[x_colomn], df[y_colum], color=random_colors)
+
+    if Title !="" :
+        plt.title(Title, fontsize=16)
+
+    plt.xlabel(x_lable, fontsize=12)
+    plt.ylabel(y_label, fontsize=12)
+    plt.xticks(fontsize=10, rotation=90) 
+    plt.yticks(fontsize=10) 
+    
+    plt.tight_layout()
+    plt.show()
+    
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    image_base64_piechart = base64.b64encode(buffer.read()).decode('utf-8')
+    buffer.close()           
+
+    plt.close()              
+    return image_base64_piechart

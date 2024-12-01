@@ -6,8 +6,8 @@ from datawebanalysis import app
 from datetime import datetime
 from flask import render_template,jsonify
 
-from .module.baseanalysis import get_orm_member
-
+from .module.baseanalysis import get_orm_member,get_build_member
+import datawebanalysis.module.common as com
 
 TITLE="Dankook University"
 YEAR=datetime.now().year
@@ -22,14 +22,24 @@ def home():
         title=TITLE,
         year=YEAR
     )
+
+#가입도매, 미 가입도매 ==> 파이차트 getorgmember.to_json(orient='records')
 @app.route('/home/getorgmember',methods=['GET'])
 def getorgmember():
     result=""
     try:
-        getorgmember =get_orm_member()
+        (n_count,not_n_count) =get_orm_member()
+        build_member=get_build_member()
+        
+        piechart=com.genpiechart(
+                ['플랫폼가입자','스마트노트가입자'],
+                [n_count,not_n_count],''
+            )
+        barchart=com.genbarchart(build_member,'bld_name','count','','','')
         result={
                  "result":"success",
-                 "get_orm_member":getorgmember.to_json(orient='records')
+                 "piechart":piechart,
+                 "barchart":barchart
                }
     except  Exception as err:
         result={"result":"fail",'error': '%s' %(err)}
