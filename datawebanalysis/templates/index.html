@@ -16,8 +16,24 @@
     fn_GetOrgMember = () => {
 
     }
-    onload = () => {
-        alert(2)
+    onload = async () => {
+        try {
+            Big3Common.Util.LoadingOn();
+            let Data = await Big3Common.Get("/home/getorgmember");
+            if (Data.result === "success") {
+
+            }
+            else {
+                console.log(Data.error);
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+        finally {
+            Big3Common.Util.LoadingOff();
+        }
+        
     }
 </script>
 

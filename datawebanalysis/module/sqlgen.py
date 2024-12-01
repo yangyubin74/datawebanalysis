@@ -57,4 +57,4 @@ def select_org_member():
      rows = cursor.fetchall()
      df = pd.DataFrame(rows, columns=['org_nm'])
      df['org_nm'] = df['org_nm'].apply(lambda x: 'Y' if x != 'N' else x)
-     print(df.head())
+     return df

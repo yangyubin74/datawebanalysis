@@ -2,13 +2,14 @@
 Routes and views for the flask application.
 """
 
+from datawebanalysis import app
 from datetime import datetime
 from flask import render_template,jsonify
-from datawebanalysis import app
+
 from .module.baseanalysis import get_orm_member
 
 
-TITLE="Y2B Company"
+TITLE="Dankook University"
 YEAR=datetime.now().year
 
 ######################################### Ȩ[S] ######################################## 
@@ -23,7 +24,16 @@ def home():
     )
 @app.route('/home/getorgmember',methods=['GET'])
 def getorgmember():
-    result=get_orm_member()
+    result=""
+    try:
+        getorgmember =get_orm_member()
+        result={
+                 "result":"success",
+                 "get_orm_member":getorgmember.to_json(orient='records')
+               }
+    except  Exception as err:
+        result={"result":"fail",'error': '%s' %(err)}
+    
     return jsonify(result)
 
 ######################################### Ȩ[E] ######################################## 
