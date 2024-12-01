@@ -23,14 +23,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand">Data Analysis Tool
+                <a href="#" class="navbar-brand">Data Analysis Tool
                 </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('about') }}">ARIMA/SARIMA</a></li>
-                    <li><a href="{{ url_for('contact') }}">K-Means/DBSCAN</a></li>
+                    <li><a href="{{ url_for('home') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('about') }}">K-Means/DBSCAN</a></li>
+                    <li><a href="{{ url_for('contact') }}">ARIMA/SARIMA</a></li>
                     <li><a href="{{ url_for('contact') }}">Socail N/W</a></li>
                 </ul>
             </div>
@@ -41,7 +41,7 @@
         {% block content %}{% endblock %}
         <hr />
         <footer>
-            <p>&copy; {{ year }} - <b>Yubin Yang &amp; Mingu Gang</b></p>
+            <p style="font-size:13pt">&copy; {{ year }} - <b>Yubin Yang &amp; Mingu Gang</b></p>
         </footer>
     </div>
 

@@ -54,63 +54,9 @@ class Big3Common {
             console.log("Post==>", e);
         }
     }
-     
-
-    //Guid 생성함수
-    //Big3Common.getGuid()
-    static getGuid() {
-        let crypto = window.crypto || window.msCrypto || null; // IE11 fix
-
-        let Guid = (function () {
-
-            var EMPTY = '00000000-0000-0000-0000-000000000000';
-
-            var _padLeft = function (paddingString, width, replacementChar) {
-                return paddingString.length >= width ? paddingString : _padLeft(replacementChar + paddingString, width, replacementChar || ' ');
-            };
-
-            var _s4 = function (number) {
-                var hexadecimalResult = number.toString(16);
-                return _padLeft(hexadecimalResult, 4, '0');
-            };
-
-            var _cryptoGuid = function () {
-                var buffer = new window.Uint16Array(8);
-                window.crypto.getRandomValues(buffer);
-                return [_s4(buffer[0]) + _s4(buffer[1]), _s4(buffer[2]), _s4(buffer[3]), _s4(buffer[4]), _s4(buffer[5]) + _s4(buffer[6]) + _s4(buffer[7])].join('-');
-            };
-
-            var _guid = function () {
-                var currentDateMilliseconds = new Date().getTime();
-                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (currentChar) {
-                    var randomChar = (currentDateMilliseconds + Math.random() * 16) % 16 | 0;
-                    currentDateMilliseconds = Math.floor(currentDateMilliseconds / 16);
-                    return (currentChar === 'x' ? randomChar : (randomChar & 0x7 || 0x8)).toString(16);
-                });
-            };
-
-            var create = function () {
-                var hasCrypto = crypto !== 'undefined' && crypto !== null,
-                    hasRandomValues = typeof (window.crypto) !== 'undefined' && typeof (window.crypto.getRandomValues) !== 'undefined';
-                return (hasCrypto && hasRandomValues) ? _cryptoGuid() : _guid();
-            };
-
-            return {
-                newGuid: create,
-                empty: EMPTY
-            };
-        })();
-
-        return Guid.newGuid();
-    }
-     
-     
+          
     static Util = {
-        //Json배열 깊은복사
-        Cloen: function (jsonStructure) {
-            let source = JSON.stringify(jsonStructure);
-            return JSON.parse(source);
-        },
+        
         //Json 특정 컬렉션에서 특정 항목을 삭제
         RemoveModelListRow: function (Modelist, DeleteKey, DeleteValue) {
             let idx = Modelist.findIndex((element) => (element[DeleteKey] === DeleteValue));
@@ -138,23 +84,26 @@ class Big3Common {
             }
             return dateArray;
         },
-        TempHumTableGen: function (weather, coldate,coltemp,colhum) {
+        DataGridGen: function (DataList, coldate,coltemp,colhum) {
             let Table = "";
             let rows = "";
-            if (weather.length === 0) return "";
+            if (DataList.length === 0) return "";
 
-            weather.map((list, idx) => {
-                let dateTime = list[coldate];
-                const dateformat = dateTime.slice(0, 4) + "-" + dateTime.slice(4, 6) + "-" + dateTime.slice(6, 8) + " " + dateTime.slice(8, 10) + ":" + dateTime.slice(10, 12);
+            DataList.map((list, idx) => {
+                const timestamp = list[coldate];
+                const date = new Date(timestamp);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0'); 
+                const dateformat = `${year}-${month}`;
                 if (idx % 2 == 0) {
                     rows = "<tr>"
-                    rows += `<td>${dateformat}</td>`
                     rows += `<td>${list[coltemp]}</td>`
+                    rows += `<td>${dateformat}</td>`
                     rows += `<td>${list[colhum] }</td>`
                 }
                 else {
-                    rows += `<td>${dateformat}</td>`
                     rows += `<td>${list[coltemp]}</td>`
+                    rows += `<td>${dateformat}</td>`
                     rows += `<td>${list[colhum]}</td>`
                     rows += "</tr>";
                     Table += rows;
@@ -162,7 +111,7 @@ class Big3Common {
                 }
             });
             //마지막 행이 부족함
-            if (weather.length % 2 !== 0) {
+            if (DataList.length % 2 !== 0) {
                 rows += `<td>-</td>`
                 rows += `<td>-</td>`
                 rows += `<td>-</td>`

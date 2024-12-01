@@ -27,8 +27,23 @@
             <h3>건물별 매출추이</h3>
             <img id="img_buildsales_month" style="display: none" class="img-fluid" alt="Organization Members Chart" />
         </div>
+        <div class="col-md-12 text-center">
+            <div style="height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+                <table id="buildsalesGrid" style="width: 100%; border-collapse: collapse;">
+                    <thead style="height:50px; background-color:black;color:white;" >
+                        <tr>
+                            <th>건물명</th>
+                            <th>년/월</th>
+                            <th>금액</th>
+                            <th>건물명</th>
+                            <th>년/월</th>
+                            <th style="width: 25%;text-align: center">금액</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     </div>
-</div>
 
 
 <script>
@@ -46,12 +61,15 @@
                 const barchart = Data.barchart;
                 const barchart2 = Data.barchart2;
                 const linechart = Data.linechart;
+                const sales_month = JSON.parse(Data.build_sales_month);
                 $("#img_orgmember").attr("src", "data:image/png;base64," + piechart);
                 $("#img_buildmember").attr("src", "data:image/png;base64," + barchart);
                 $("#img_buildsales").attr("src", "data:image/png;base64," + barchart2);
                 $("#img_buildsales_month").attr("src", "data:image/png;base64," + linechart);
 
                 $("#img_orgmember,#img_buildmember,#img_buildsales ,#img_buildsales_month").show();
+                const DataGrid = Big3Common.Util.DataGridGen(sales_month, "order_month", "bld_name", "buy_amt");
+                $("#buildsalesGrid").append(DataGrid)
             }
             else {
                 console.log(Data.error);

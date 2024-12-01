@@ -125,3 +125,21 @@ input[type="checkbox"].input-validation-error {
     margin-bottom: 20px; /* 구분선과 다음 콘텐츠 간의 간격 */
     padding-bottom: 20px;
 }
+/* tbody 스타일 */
+#buildsalesGrid tbody tr:nth-child(odd) {
+    background-color: #eee; /* 배경색 (홀수 행) */
+}
+
+#buildsalesGrid tbody tr:nth-child(even) {
+    background-color: #ffffff; /* 배경색 (짝수 행, 기본 흰색) */
+}
+
+#buildsalesGrid tbody tr {
+    height: 50px; /* 행 높이 조정 */
+    font-size: 12pt
+}
+#buildsalesGrid thead tr th {
+    width: 15%;
+    text-align: center;
+    font-size: 12pt
+}

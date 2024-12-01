@@ -129,7 +129,7 @@ def genlinechart(df,x_colomn,y_colum,groupName,x_lable,y_label,with_size=8,heigh
     if pd.api.types.is_period_dtype(df[x_colomn]):
         df[x_colomn] = df[x_colomn].dt.to_timestamp()
 
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(with_size, height_size))
     for bld_name, group in df.groupby(groupName):
         plt.plot(group[x_colomn], group[y_colum], marker='o', label=bld_name)
 
@@ -138,8 +138,8 @@ def genlinechart(df,x_colomn,y_colum,groupName,x_lable,y_label,with_size=8,heigh
     plt.ylabel(y_label)
     plt.xticks(rotation=45)
     
-    plt.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=len(df['bld_name'].unique()))
-    plt.subplots_adjust(bottom=0.3)
+    plt.legend(loc='lower center', bbox_to_anchor=(0.5, 1.05), ncol=len(df['bld_name'].unique()))
+    #plt.subplots_adjust(bottom=0.85)
     plt.grid(True)
     plt.tight_layout()
     line_chart=base64imageGeneration(plt)
