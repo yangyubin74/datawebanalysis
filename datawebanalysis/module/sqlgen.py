@@ -48,7 +48,7 @@ def insert_db(df):
     connection.close()
 
 #플랫폼 가입자와 비가입자 조회
-def select_org_nm():
+def select_org_member():
      connection, cursor = connection_cursor()
      select_query = """
        select org_nm from data
