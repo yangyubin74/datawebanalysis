@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+
+<div class="text-center">
+    <h1>건물별 12월 매출 예측</h1>
+</div>
+
+<script>
+
+
+    fn_Search = async () => {
+        try {
+            Big3Common.Util.LoadingOn();
+            
+            let Data = await Big3Common.Get(`/prediction/getaverageprediction`);
+            console.log(Data);
+            if (Data.result === "success") {
+                
+                
+            }
+            else {
+                console.log(Data.error);
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+        finally {
+            Big3Common.Util.LoadingOff();
+        }
+    }
+    onload = async () => {
+        await fn_Search()
+    }
+</script>
+
+{% endblock %}

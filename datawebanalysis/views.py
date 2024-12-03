@@ -11,6 +11,7 @@ from flask import render_template,jsonify
 
 from .module.baseanalysis import get_orm_member,get_build_member,get_build_sales,get_build_sales_month
 from .module.socialanalysis import get_social_network
+from .module.prediction import get_average_prediction
 import datawebanalysis.module.common as com
 
 TITLE="Dankook University"
@@ -97,11 +98,30 @@ def kmeans():
         year=YEAR
     )
 
-@app.route('/arima')
-def arima():
+######################################### Prediction [S] ######################################## 
+@app.route('/prediction')
+def prediction():
     """Renders the about page."""
     return render_template(
-        'arima.html',
+        'prediction.html',
         title=TITLE,
         year=YEAR
     )
+#이동평균 예측
+@app.route('/prediction/getaverageprediction',methods=['GET'])
+def getaverageprediction():
+    result=""
+    try:
+
+        average_prediction=get_average_prediction()
+       
+        result={
+                 "result":"success",
+                 "average":average_prediction.to_json(orient='records')
+               }
+        
+    except  Exception as err:
+        result={"result":"fail",'error': '%s' %(err)}
+    
+    return jsonify(result)
+######################################### Prediction [E] ######################################## 

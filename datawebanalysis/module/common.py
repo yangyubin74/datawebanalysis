@@ -166,7 +166,7 @@ def socalnetworkchart(df):
     retailer_nodes = [node for node, attr in G.nodes(data=True) if attr["type"] == "retailer"]
 
     nx.draw_networkx_nodes(G, pos, nodelist=wholesaler_nodes, node_color='dodgerblue', node_size=300,label='Wholesalers')
-    nx.draw_networkx_nodes(G, pos, nodelist=retailer_nodes, node_color='skyblue', node_size=50,  label='Retailers')
+    nx.draw_networkx_nodes(G, pos, nodelist=retailer_nodes, node_color='limegreen', node_size=50,  label='Retailers')
     nx.draw_networkx_edges(G, pos, edge_color='gray', alpha=0.5)
 
     # 노드 라벨 추가
