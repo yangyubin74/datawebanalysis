@@ -8,10 +8,13 @@ from sklearn.ensemble import IsolationForest
 import base64
 from io import BytesIO
 import random
-
+import networkx as nx
+import matplotlib.font_manager as fm
 
 plt.rcParams['font.family'] = 'Malgun Gothic'  # Windows의 경우 '맑은 고딕'
 plt.rcParams['axes.unicode_minus'] = False  # 음수 기호 깨짐 방지
+# for font in fm.findSystemFonts(fontpaths=None, fontext='ttf'):
+#         print(font)
 
 def user_print(title, border_char="#",content=""):
         
@@ -146,6 +149,39 @@ def genlinechart(df,x_colomn,y_colum,groupName,x_lable,y_label,with_size=8,heigh
     plt.close()       
     
     return line_chart
+
+#소셜네트워크 분석 
+def socalnetworkchart(df):
+    
+    G = nx.Graph()
+    for _, row in df.iterrows():
+        G.add_node(row["whole_code"], label=row["whole_name"], type="wholesaler")
+        G.add_node(row["union_uid"], type="retailer")
+        G.add_edge(row["whole_code"], row["union_uid"])
+
+    plt.figure(figsize=(8, 8))
+    pos = nx.spring_layout(G, seed=42,scale=2)  # 시각화를 위한 레이아웃 설정
+
+    wholesaler_nodes = [node for node, attr in G.nodes(data=True) if attr["type"] == "wholesaler"]
+    retailer_nodes = [node for node, attr in G.nodes(data=True) if attr["type"] == "retailer"]
+
+    nx.draw_networkx_nodes(G, pos, nodelist=wholesaler_nodes, node_color='dodgerblue', node_size=300,label='Wholesalers')
+    nx.draw_networkx_nodes(G, pos, nodelist=retailer_nodes, node_color='skyblue', node_size=50,  label='Retailers')
+    nx.draw_networkx_edges(G, pos, edge_color='gray', alpha=0.5)
+
+    # 노드 라벨 추가
+    font_name = fm.FontProperties(fname="c:/Windows/Fonts/malgun.ttf").get_name()
+    
+    wholesaler_labels = {node: G.nodes[node]["label"] for node in wholesaler_nodes}
+    nx.draw_networkx_labels(G, pos, labels=wholesaler_labels, font_size=8,font_family=font_name)
+
+    plt.legend()
+    #plt.title("Wholesaler-Retailer Network")
+    plt.tight_layout() 
+    networkchart=base64imageGeneration(plt)
+    plt.close() 
+
+    return networkchart
 
 # base64코드 생성기
 def base64imageGeneration(plt):

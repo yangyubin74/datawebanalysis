@@ -2,17 +2,21 @@
 Routes and views for the flask application.
 """
 
+from ast import Import
+
+from numpy import int16
 from datawebanalysis import app
 from datetime import datetime
 from flask import render_template,jsonify
 
 from .module.baseanalysis import get_orm_member,get_build_member,get_build_sales,get_build_sales_month
+from .module.socialanalysis import get_social_network
 import datawebanalysis.module.common as com
 
 TITLE="Dankook University"
 YEAR=datetime.now().year
 
-######################################### Ȩ[S] ######################################## 
+######################################### Home [S] ######################################## 
 @app.route('/')
 @app.route('/home')
 def home():
@@ -54,24 +58,50 @@ def getorgmember():
     
     return jsonify(result)
 
-######################################### Ȩ[E] ######################################## 
+######################################### Home [E] ######################################## 
 
-@app.route('/contact')
-def contact():
+######################################### Social [S] ######################################## 
+
+@app.route('/social')
+def social():
     """Renders the contact page."""
     return render_template(
-        'contact.html',
-        title='Contact',
-        year=YEAR,
-        message='Your contact page.'
+        'social.html',
+        title=TITLE,
+        year=YEAR
     )
 
-@app.route('/about')
-def about():
+@app.route('/social/getsocaildata/<from_value>/<to_value>',methods=['GET'])
+def getsocaildata(from_value,to_value):
+    result=""
+    try:
+        social_network=get_social_network(int16(from_value),int16(to_value))
+        networkchart=com.socalnetworkchart(social_network)         
+        result={
+                 "result":"success",
+                 "networkchart":networkchart,
+                 "socialdata":social_network.to_json(orient='records')
+               }
+    except  Exception as err:
+        result={"result":"fail",'error': '%s' %(err)}
+    
+    return jsonify(result)
+######################################### Social [E] ######################################## 
+
+@app.route('/kmeans')
+def kmeans():
     """Renders the about page."""
     return render_template(
-        'about.html',
-        title='About',
-        year=YEAR,
-        message='Your application description page.'
+        'kmeans.html',
+        title=TITLE,
+        year=YEAR
+    )
+
+@app.route('/arima')
+def arima():
+    """Renders the about page."""
+    return render_template(
+        'arima.html',
+        title=TITLE,
+        year=YEAR
     )

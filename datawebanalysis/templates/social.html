@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="text-center">
+    <h1>도매와 소매의 Socail N/W Analysis</h1>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <img id="img_socialnetwork" style="display: none" class="img-fluid" alt="Organization Members Chart" />
+        </div>
+        <div class="col-md-12 text-center">
+            <input type="number" id="from_value" placeholder="숫자 입력 1" value="3000" style="margin-right: 10px; padding: 5px;" />&nbsp;~&nbsp;
+            <input type="number" id="to_value" placeholder="숫자 입력 2" value="3010" style="margin-right: 10px; padding: 5px;" />
+            <button id="searchButton"
+                    onclick="fn_Search()"
+                    style="background-color: black; color: white; padding: 5px 15px; border: none; cursor: pointer;">
+                검색
+            </button>
+        </div>
+    </div>
+</div>
+<script>
+
+   
+    fn_Search = async () => {
+        try {
+            Big3Common.Util.LoadingOn();
+            const from_value = $("#from_value").val();
+            const to_value = $("#to_value").val();
+            let Data = await Big3Common.Get(`/social/getsocaildata/${from_value}/${to_value}`);
+            if (Data.result === "success") {
+                console.log("Data", JSON.parse(Data.socialdata))
+                const networkchart = Data.networkchart;
+
+                $("#img_socialnetwork").attr("src", "data:image/png;base64," + networkchart);
+                $("#img_socialnetwork").show();
+            }
+            else {
+                console.log(Data.error);
+            }
+        }
+        catch (e) {
+            console.log(e);
+        }
+        finally {
+            Big3Common.Util.LoadingOff();
+        }
+    }
+    onload = async () => {
+        await fn_Search()
+    }
+</script>
+
+{% endblock %}

@@ -55,5 +55,4 @@ def get_build_sales_month():
 
     filtered_df=df[['bld_name','buy_amt','order_month','order_dt']]
     filtered_df = df.groupby(['bld_name', 'order_month'], as_index=False)['buy_amt'].sum()
-    print("===>",filtered_df)
     return filtered_df
