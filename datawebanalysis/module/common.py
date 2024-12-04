@@ -191,7 +191,7 @@ def averagepredictionchart(df,average_data):
     plt.plot(df['order_month'], df['buy_amt'], label='매출', marker='o')
     plt.plot(df['order_month'], df['moving_avg'], label='12개월 이동 평균', linestyle='--', color='orange')
     plt.axhline(y=average_data, color='red', linestyle='--', label=f'2024-12 예측: {int(average_data):,}원')
-    plt.title("2024년 12월 매출 예측 (이동 평균)", fontsize=16)
+    
     plt.xlabel("월", fontsize=12)
     plt.ylabel("매출 (원)", fontsize=12)
     plt.legend()

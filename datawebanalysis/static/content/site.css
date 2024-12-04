@@ -143,3 +143,7 @@ input[type="checkbox"].input-validation-error {
     text-align: center;
     font-size: 12pt
 }
+.menuClass {
+    color: white !important; /* 활성화된 링크의 텍스트 색상 */
+    font-weight: bold; /* 선택 사항: 강조 효과 */
+}

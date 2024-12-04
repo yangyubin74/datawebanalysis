@@ -2,41 +2,43 @@
 
 {% block content %}
 
-<div class="text-center">
-    <h1>도매와 소매의 Socail N/W Analysis</h1>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <img id="img_socialnetwork" style="display: none" class="img-fluid" alt="Organization Members Chart" />
-        </div>
-        <div class="col-md-12 text-center">
-            <input type="number" id="from_value" placeholder="숫자 입력 1" value="3000" style="margin-right: 10px; padding: 5px;" />&nbsp;~&nbsp;
-            <input type="number" id="to_value" placeholder="숫자 입력 2" value="3010" style="margin-right: 10px; padding: 5px;" />
-            <button id="searchButton"
-                    onclick="fn_Search()"
-                    style="background-color: black; color: white; padding: 5px 15px; border: none; cursor: pointer;">
-                검색
-            </button>
-        </div>
+<div id="containers" style="display:none">
+    <div class="text-center">
+        <h1>도매와 소매의 Socail N/W Analysis</h1>
     </div>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <h3>Data Infomation</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img id="img_socialnetwork" class="img-fluid" alt="Organization Members Chart" />
+            </div>
+            <div class="col-md-12 text-center">
+                <input type="number" id="from_value" placeholder="숫자 입력 1" value="3000" style="margin-right: 10px; padding: 5px;" />&nbsp;~&nbsp;
+                <input type="number" id="to_value" placeholder="숫자 입력 2" value="3010" style="margin-right: 10px; padding: 5px;" />
+                <button id="searchButton"
+                        onclick="fn_Search()"
+                        style="background-color: black; color: white; padding: 5px 15px; border: none; cursor: pointer;">
+                    검색
+                </button>
+            </div>
         </div>
-        <div class="col-md-12 text-center">
-            <div style="height: 400px; overflow-y: auto; border: 1px solid #ddd;">
-                <table id="buildsalesGrid" style="width: 100%; border-collapse: collapse;">
-                    <thead style="height:50px; background-color:black;color:white;">
-                        <tr>
-                            <th>도매명</th>
-                            <th>도매코드</th>
-                            <th>소매코드</th>
-                        </tr>
-                    </thead>
-                    <tbody id="socialnetData">
-                    </tbody>
-                </table>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h3>Data Infomation</h3>
+            </div>
+            <div class="col-md-12 text-center">
+                <div style="height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+                    <table id="buildsalesGrid" style="width: 100%; border-collapse: collapse;">
+                        <thead style="height:50px; background-color:black;color:white;">
+                            <tr>
+                                <th>도매명</th>
+                                <th>도매코드</th>
+                                <th>소매코드</th>
+                            </tr>
+                        </thead>
+                        <tbody id="socialnetData">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -54,15 +56,14 @@
                 const networkchart = Data.networkchart;
                 const socialdata = JSON.parse(Data.socialdata);
                 $("#img_socialnetwork").attr("src", "data:image/png;base64," + networkchart);
-                $("#img_socialnetwork").show();
-
                 let trhtml = "";
                 socialdata.forEach((el) => {
                     let trTag = `<tr><td>${el.whole_name}</td><td>${el.whole_code}</td><td>${el.union_uid}</td></tr>`;
                     trhtml += trTag;
                 })
-                $("#socialnetData").html(trhtml)
 
+                $("#socialnetData").html(trhtml)
+                $("#containers").show();
             }
             else {
                 console.log(Data.error);

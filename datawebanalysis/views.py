@@ -121,24 +121,29 @@ def getaverageprediction():
         (average_data,df)=average_prediction_data(df)
         average_data_chart=com.averagepredictionchart(df,average_data)
         new_row = {
-        "bld_name": "디오트",
-        "order_month": pd.to_datetime("2024-12", format='%Y-%m'),
-        "buy_amt": 0,
-        "moving_avg": average_data  # 예측된 이동 평균 값
+            "bld_name": "디오트",
+            "order_month": pd.to_datetime("2024-12", format='%Y-%m'),
+            "buy_amt": 0,
+            "moving_avg": average_data  # 예측된 이동 평균 값
          }
 
         #선형회귀 예측
         df2=get_prediction_data()
-        print(df2.head())
         (predicted_value,inear_prediction,model)=linear_prediction_data(df2)
         linear_data_chart=com.linearregressionchart(df2,predicted_value,inear_prediction,model)
-        print("linear_data",predicted_value)
+        new_row2 = {
+            "bld_name": "디오트",
+            "order_month": pd.to_datetime("2024-12", format='%Y-%m'),
+            "buy_amt": predicted_value.round(0),
+            "order_dt_num":inear_prediction
+         }
+
         result={
                  "result":"success",
-                 "average":df.to_json(orient='records'),
                  "average_data": pd.concat([df, pd.DataFrame([new_row])], ignore_index=True).to_json(orient='records'),
                  "average_data_chart":average_data_chart,
-                 "linear_data_chart":linear_data_chart
+                 "linear_data_chart":linear_data_chart,
+                 "linear_data":pd.concat([df2, pd.DataFrame([new_row2])], ignore_index=True).to_json(orient='records')
                }
         
     except  Exception as err:
