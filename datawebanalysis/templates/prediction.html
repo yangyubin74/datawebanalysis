@@ -4,20 +4,74 @@
 
 
 <div class="text-center">
-    <h1>건물별 12월 매출 예측</h1>
+    <h1>12월 매출 예측</h1>
 </div>
-
+<div class="row">
+    <div class="col-md-6 text-center">
+        <h3>디오트 이동 평균 2024년 12월 매출 예측</h3>
+        <img id="img_average_chart" style="width: 500px; height: 500px;display:none" class="img-fluid" alt="Organization Members Chart" />
+    </div>
+    <div class="col-md-6 text-center">
+        <h3>매출 및 예측 데이터</h3>
+        <div style="height: 423px; overflow-y: auto; border: 1px solid #ddd; margin-top: 39px">
+            <table id="buildsalesGrid" style="width: 100%; border-collapse: collapse;">
+                <thead style="height:40px; background-color:black;color:white;">
+                    <tr>
+                        <th>년월</th>
+                        <th>매출액</th>
+                        <th>이동평균</th>
+                    </tr>
+                </thead>
+                <tbody id="averageData">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-6 text-center">
+        <h3>선형회귀 2024년 12월 매출 예측</h3>
+        <img id="img_linear_chart" style="width: 500px; height: 500px;display:none" class="img-fluid" alt="Organization Members Chart" />
+    </div>
+    <div class="col-md-6 text-center">
+        <h3>매출 및 예측 데이터</h3>
+        <div style="height: 423px; overflow-y: auto; border: 1px solid #ddd; margin-top: 39px">
+            <table id="buildsalesGrid" style="width: 100%; border-collapse: collapse;">
+                <thead style="height:40px; background-color:black;color:white;">
+                    <tr>
+                        <th>년월</th>
+                        <th>매출액</th>
+                        <th>이동평균</th>
+                    </tr>
+                </thead>
+                <tbody id="linearData">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <script>
 
 
     fn_Search = async () => {
         try {
             Big3Common.Util.LoadingOn();
-            
+
             let Data = await Big3Common.Get(`/prediction/getaverageprediction`);
-            console.log(Data);
             if (Data.result === "success") {
-                
+                const averagedata = JSON.parse(Data.average_data)
+                const average_chart = Data.average_data_chart;
+                const linear_chart = Data.linear_data_chart;
+
+                $("#img_average_chart").attr("src", "data:image/png;base64," + average_chart);
+                $("#img_linear_chart").attr("src", "data:image/png;base64," + linear_chart);
+
+                $("#img_average_chart,#img_linear_chart").show();
+
+                let trhtml = "";
+                averagedata.forEach((el) => {
+                    let trTag = `<tr><td>${Big3Common.Util.MonthDate(el.order_month)}</td ><td>${Big3Common.Util.Money(el.buy_amt)}</td><td>${Big3Common.Util.Money(el.moving_avg)}</td></tr >`;
+                    trhtml += trTag;
+                })
+                $("#averageData").html(trhtml)
                 
             }
             else {

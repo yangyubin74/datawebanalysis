@@ -11,8 +11,9 @@ from flask import render_template,jsonify
 
 from .module.baseanalysis import get_orm_member,get_build_member,get_build_sales,get_build_sales_month
 from .module.socialanalysis import get_social_network
-from .module.prediction import get_average_prediction
+from .module.prediction import get_prediction_data,average_prediction_data,linear_prediction_data
 import datawebanalysis.module.common as com
+import pandas as pd
 
 TITLE="Dankook University"
 YEAR=datetime.now().year
@@ -113,11 +114,31 @@ def getaverageprediction():
     result=""
     try:
 
-        average_prediction=get_average_prediction()
-       
+        #기본 데이터 조회
+        df=get_prediction_data()
+
+        #이동평균 데이터 및 차트
+        (average_data,df)=average_prediction_data(df)
+        average_data_chart=com.averagepredictionchart(df,average_data)
+        new_row = {
+        "bld_name": "디오트",
+        "order_month": pd.to_datetime("2024-12", format='%Y-%m'),
+        "buy_amt": 0,
+        "moving_avg": average_data  # 예측된 이동 평균 값
+         }
+
+        #선형회귀 예측
+        df2=get_prediction_data()
+        print(df2.head())
+        (predicted_value,inear_prediction,model)=linear_prediction_data(df2)
+        linear_data_chart=com.linearregressionchart(df2,predicted_value,inear_prediction,model)
+        print("linear_data",predicted_value)
         result={
                  "result":"success",
-                 "average":average_prediction.to_json(orient='records')
+                 "average":df.to_json(orient='records'),
+                 "average_data": pd.concat([df, pd.DataFrame([new_row])], ignore_index=True).to_json(orient='records'),
+                 "average_data_chart":average_data_chart,
+                 "linear_data_chart":linear_data_chart
                }
         
     except  Exception as err:

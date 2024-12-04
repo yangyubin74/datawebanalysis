@@ -148,6 +148,28 @@ class Big3Common {
                 myLoading.remove();
             }
             return false;
+        },
+        MonthDate: function (timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const dateformat = `${year}-${month}`;
+            return dateformat;
+        },
+        Money: function (txtNumber) {
+            try {
+                if (txtNumber === null || txtNumber === "") {
+                    return 0;
+                }
+                //let arrNumber = txtNumber.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+                let arrNumber = txtNumber.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return arrNumber;
+            }
+            catch (e) {
+                console.log("Money", e);
+                return 0;
+            }
+
         }
     }
 

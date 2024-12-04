@@ -1,24 +1,52 @@
 
 import datawebanalysis.module.sqlgen as sql
 import pandas as pd
+from sklearn.linear_model import LinearRegression
 
-#ÀÌµ¿ Æò±Õ ¿¹Ãø
-def get_average_prediction():
+#ì´ë™ í‰ê·  ì˜ˆì¸¡
+def get_prediction_data():
     try:
-        # µ¥ÀÌÅÍº£ÀÌ½º¿¡¼­ µ¥ÀÌÅÍ °¡Á®¿À±â
+        # ë°ì´í„°ë² ì´ìŠ¤ì—ì„œ ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
         df = sql.select_common_data()
-
-        # µ¥ÀÌÅÍ ÀüÃ³¸®
+        df=df[df['bld_name'] == 'ë””ì˜¤íŠ¸']
+        # ë°ì´í„° ì „ì²˜ë¦¬
         df['buy_amt'] = df['buy_amt'].astype('int64')
         df['order_dt'] = pd.to_datetime(df['order_dt'])
         df['order_month'] = pd.to_datetime(df['order_dt']).dt.to_period('M')
 
-        # ±×·ìÈ­ ¹× °á°ú »ı¼º
+        # ê·¸ë£¹í™” ë° ê²°ê³¼ ìƒì„±
         filtered_df = df.groupby(['bld_name', 'order_month'], as_index=False)['buy_amt'].sum()
         filtered_df['order_month'] = filtered_df['order_month'].astype(str)
 
         return filtered_df
     except Exception as e:
-        # ¿¡·¯ ·Î±× Ãß°¡
+        # ì—ëŸ¬ ë¡œê·¸ ì¶”ê°€
         print(f"Error in get_average_prediction: {e}")
-        raise  # ¿¹¿Ü¸¦ ´Ù½Ã ¹ß»ı½ÃÄÑ È£ÃâÀÚ¿¡°Ô Àü´Ş
+        raise  # ì˜ˆì™¸ë¥¼ ë‹¤ì‹œ ë°œìƒì‹œì¼œ í˜¸ì¶œìì—ê²Œ ì „ë‹¬
+ 
+ #ì´ë™í‰ê·  ì˜ˆì¸¡ ë°ì´í„°
+def average_prediction_data(df):
+    df['order_month'] = pd.to_datetime(df['order_month'], format='%Y-%m')
+    df = df.sort_values('order_month')
+    df['moving_avg'] = df['buy_amt'].rolling(window=12).mean().round(0)
+    df['moving_avg'] = df['moving_avg'].fillna(0)
+    df['moving_avg'].astype('int64')
+    average_prediction = df['moving_avg'].iloc[-1].round(0)
+
+    return (average_prediction,df)
+
+#ì„ í˜•íšŒê·€ë¡œ ì˜ˆì¸¡ ë°ì´í„°
+def linear_prediction_data(df):
+
+    df['order_month'] = pd.to_datetime(df['order_month'], format='%Y-%m')
+    # ìˆ«ìí˜•ìœ¼ë¡œ ë³€í™˜ (ë…„ë„ì™€ ì›”ì„ ì—°ì†ì ì¸ ìˆ«ìë¡œ ì²˜ë¦¬)
+    df['order_dt_num'] = df['order_month'].dt.year * 12 + df['order_month'].dt.month
+    train_data = df[df['buy_amt'] > 0]
+    X = train_data[['order_dt_num']].values
+    y = train_data['buy_amt'].values
+    model = LinearRegression()
+    model.fit(X, y)
+    #ì—¬ê¸°ë„ ìˆ«ìë¡œ ë³€í™˜
+    inear_prediction=(2024 * 12) + 12
+    predicted_value = model.predict([[inear_prediction]])
+    return (predicted_value,inear_prediction,model)

@@ -10,6 +10,7 @@ from io import BytesIO
 import random
 import networkx as nx
 import matplotlib.font_manager as fm
+from sklearn.linear_model import LinearRegression
 
 plt.rcParams['font.family'] = 'Malgun Gothic'  # Windows의 경우 '맑은 고딕'
 plt.rcParams['axes.unicode_minus'] = False  # 음수 기호 깨짐 방지
@@ -182,6 +183,40 @@ def socalnetworkchart(df):
     plt.close() 
 
     return networkchart
+
+#이동평균 예측 그리기
+def averagepredictionchart(df,average_data):
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(df['order_month'], df['buy_amt'], label='매출', marker='o')
+    plt.plot(df['order_month'], df['moving_avg'], label='12개월 이동 평균', linestyle='--', color='orange')
+    plt.axhline(y=average_data, color='red', linestyle='--', label=f'2024-12 예측: {int(average_data):,}원')
+    plt.title("2024년 12월 매출 예측 (이동 평균)", fontsize=16)
+    plt.xlabel("월", fontsize=12)
+    plt.ylabel("매출 (원)", fontsize=12)
+    plt.legend()
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.tight_layout()
+    averagechart=base64imageGeneration(plt)
+    plt.close() 
+    return averagechart
+
+#선형회귀 차트
+def linearregressionchart(df,predicted_value,inear_prediction,model ):
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(df['order_dt_num'], df['buy_amt'], color='blue', label='Actual Sales', alpha=0.6)
+    plt.plot(df['order_dt_num'], model.predict(df[['order_dt_num']]), color='orange', label='Regression Line')
+    plt.scatter([inear_prediction], predicted_value, color='red', label=f'2024-12 Prediction: {int(predicted_value[0]):,}원')
+   
+    plt.xlabel("Time (Numeric Representation of Year-Month)", fontsize=12)
+    plt.ylabel("Sales (Amount in Won)", fontsize=12)
+    plt.legend()
+    plt.grid(alpha=0.3)
+    plt.tight_layout()
+    linearrechart=base64imageGeneration(plt)
+    plt.close() 
+    return linearrechart
 
 # base64코드 생성기
 def base64imageGeneration(plt):
