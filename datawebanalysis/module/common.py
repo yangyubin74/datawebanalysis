@@ -159,7 +159,7 @@ def socalnetworkchart(df):
         G.add_node(row["union_uid"], type="retailer")
         G.add_edge(row["whole_code"], row["union_uid"])
 
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(11, 6))
     pos = nx.spring_layout(G, seed=42,scale=2)  # 시각화를 위한 레이아웃 설정
 
     wholesaler_nodes = [node for node, attr in G.nodes(data=True) if attr["type"] == "wholesaler"]

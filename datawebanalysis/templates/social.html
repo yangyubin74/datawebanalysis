@@ -20,6 +20,26 @@
             </button>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h3>Data Infomation</h3>
+        </div>
+        <div class="col-md-12 text-center">
+            <div style="height: 400px; overflow-y: auto; border: 1px solid #ddd;">
+                <table id="buildsalesGrid" style="width: 100%; border-collapse: collapse;">
+                    <thead style="height:50px; background-color:black;color:white;">
+                        <tr>
+                            <th>도매명</th>
+                            <th>도매코드</th>
+                            <th>소매코드</th>
+                        </tr>
+                    </thead>
+                    <tbody id="socialnetData">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
 
@@ -31,11 +51,18 @@
             const to_value = $("#to_value").val();
             let Data = await Big3Common.Get(`/social/getsocaildata/${from_value}/${to_value}`);
             if (Data.result === "success") {
-                console.log("Data", JSON.parse(Data.socialdata))
                 const networkchart = Data.networkchart;
-
+                const socialdata = JSON.parse(Data.socialdata);
                 $("#img_socialnetwork").attr("src", "data:image/png;base64," + networkchart);
                 $("#img_socialnetwork").show();
+
+                let trhtml = "";
+                socialdata.forEach((el) => {
+                    let trTag = `<tr><td>${el.whole_name}</td><td>${el.whole_code}</td><td>${el.union_uid}</td></tr>`;
+                    trhtml += trTag;
+                })
+                $("#socialnetData").html(trhtml)
+
             }
             else {
                 console.log(Data.error);
