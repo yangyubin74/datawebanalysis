@@ -11,7 +11,7 @@ from flask import render_template,jsonify
 
 from .module.baseanalysis import get_orm_member,get_build_member,get_build_sales,get_build_sales_month
 from .module.socialanalysis import get_social_network
-from .module.prediction import get_prediction_data,average_prediction_data,linear_prediction_data
+from .module.prediction import get_prediction_data,average_prediction_data,linear_prediction_data,arima_prediction_data
 import datawebanalysis.module.common as com
 import pandas as pd
 
@@ -137,13 +137,25 @@ def getaverageprediction():
             "buy_amt": predicted_value.round(0),
             "order_dt_num":inear_prediction
          }
-
+        #ARIMA 예측
+        df3=get_prediction_data()
+        (df3,forecast,forecast_value)=arima_prediction_data(df3)
+        print(df3.head())
+        arima_data_chart=com.arimapredictionchart(df3,forecast)
+        new_row3 = {
+            "bld_name": "디오트",
+            "order_month2": pd.to_datetime("2024-12", format='%Y-%m'),
+            "buy_amt": forecast.round(0)  
+         }
+        
         result={
                  "result":"success",
                  "average_data": pd.concat([df, pd.DataFrame([new_row])], ignore_index=True).to_json(orient='records'),
                  "average_data_chart":average_data_chart,
                  "linear_data_chart":linear_data_chart,
-                 "linear_data":pd.concat([df2, pd.DataFrame([new_row2])], ignore_index=True).to_json(orient='records')
+                 "linear_data":pd.concat([df2, pd.DataFrame([new_row2])], ignore_index=True).to_json(orient='records'),
+                 "arima_data_chart":arima_data_chart,
+                 "arima_data":pd.concat([df3, pd.DataFrame([new_row3])], ignore_index=True).to_json(orient='records')
                }
         
     except  Exception as err:

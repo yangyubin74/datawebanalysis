@@ -32,7 +32,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="datawebanalysis\module\common.py" />
+    <Compile Include="datawebanalysis\module\prediction.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="datawebanalysis\module\preprocessing.py" />
+    <Compile Include="datawebanalysis\module\socialanalysis.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="datawebanalysis\module\sqlgen.py" />
     <Compile Include="runserver.py" />
     <Compile Include="datawebanalysis\__init__.py" />
@@ -52,6 +58,7 @@
     <Content Include="datawebanalysis\static\favicon.ico" />
     <Content Include="datawebanalysis\static\img\calendar-date.svg" />
     <Content Include="datawebanalysis\static\scripts\Big3Common.js" />
+    <Content Include="datawebanalysis\templates\prediction.html" />
     <Content Include="requirements.txt" />
     <Content Include="datawebanalysis\static\content\bootstrap.css" />
     <Content Include="datawebanalysis\static\content\bootstrap.min.css" />
@@ -75,8 +82,8 @@
     <Content Include="datawebanalysis\static\scripts\respond.js" />
     <Content Include="datawebanalysis\static\scripts\respond.min.js" />
     <Content Include="datawebanalysis\static\scripts\_references.js" />
-    <Content Include="datawebanalysis\templates\about.html" />
-    <Content Include="datawebanalysis\templates\contact.html" />
+    <Content Include="datawebanalysis\templates\kmeans.html" />
+    <Content Include="datawebanalysis\templates\social.html" />
     <Content Include="datawebanalysis\templates\index.html" />
     <Content Include="datawebanalysis\templates\layout.html" />
   </ItemGroup>

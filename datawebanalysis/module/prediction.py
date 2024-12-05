@@ -2,6 +2,7 @@
 import datawebanalysis.module.sqlgen as sql
 import pandas as pd
 from sklearn.linear_model import LinearRegression
+from statsmodels.tsa.arima.model import ARIMA
 
 #이동 평균 예측
 def get_prediction_data():
@@ -50,3 +51,17 @@ def linear_prediction_data(df):
     inear_prediction=(2024 * 12) + 12
     predicted_value = model.predict([[inear_prediction]])
     return (predicted_value,inear_prediction,model)
+
+def arima_prediction_data(df):
+    df['order_month'] = pd.to_datetime(df['order_month'], format='%Y-%m')
+    df['order_month2'] = df['order_month']
+    df.set_index('order_month', inplace=True)
+    
+    # ARIMA 모델 적합
+    model = ARIMA(df['buy_amt'], order=(1, 1, 1))
+    model_fit = model.fit()
+
+    # 2024-12월 매출 예측
+    forecast = model_fit.forecast(steps=1)
+    forecast_value = forecast.iloc[0]
+    return (df,forecast,forecast_value)

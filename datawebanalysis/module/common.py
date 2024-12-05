@@ -193,7 +193,7 @@ def averagepredictionchart(df,average_data):
     plt.axhline(y=average_data, color='red', linestyle='--', label=f'2024-12 예측: {int(average_data):,}원')
     
     plt.xlabel("월", fontsize=12)
-    plt.ylabel("매출 (원)", fontsize=12)
+    plt.ylabel("매출 (십억원)", fontsize=12)
     plt.legend()
     plt.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
@@ -217,6 +217,21 @@ def linearregressionchart(df,predicted_value,inear_prediction,model ):
     linearrechart=base64imageGeneration(plt)
     plt.close() 
     return linearrechart
+
+#ARIMA 차트
+def arimapredictionchart(df,forecast):
+    plt.figure(figsize=(10, 6))
+    plt.plot(df['buy_amt'], label='실제 매출', marker='o')
+    plt.axvline(pd.to_datetime("2024-11"), color='gray', linestyle='--', label='예측 시작')
+    plt.plot(pd.date_range(start="2024-12-01", periods=1, freq='M'), forecast, label='예측 매출', marker='o', color='red')
+    plt.xlabel("연월")
+    plt.ylabel("매출 (십억원)")
+    plt.legend()
+    plt.grid()
+    plt.tight_layout()
+    arimachart=base64imageGeneration(plt)
+    plt.close() 
+    return arimachart
 
 # base64코드 생성기
 def base64imageGeneration(plt):

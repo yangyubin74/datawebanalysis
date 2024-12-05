@@ -50,6 +50,28 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6 text-center">
+            <h3>ARIMA 2024년 12월 매출 예측</h3>
+            <img id="img_arima_chart" style="width: 500px; height: 500px;" class="img-fluid" alt="Organization Members Chart" />
+        </div>
+        <div class="col-md-6 text-center">
+            <h3>매출 및 예측 데이터</h3>
+            <div style="height: 429px; overflow-y: auto; border: 1px solid #ddd; margin-top: 34px">
+                <table id="buildsalesGrid" style="width: 100%; border-collapse: collapse;">
+                    <thead style="height:40px; background-color:black;color:white;">
+                        <tr>
+                            <th>년월</th>
+                            <th>매출액</th>
+                            <th>비고</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ariamData">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </dvi>
 <script>
 
@@ -63,10 +85,14 @@
                 const averagedata = JSON.parse(Data.average_data)
                 const average_chart = Data.average_data_chart;
                 const linear_chart = Data.linear_data_chart;
-                const lineardata = JSON.parse(Data.linear_data)
+                const lineardata = JSON.parse(Data.linear_data);
+                const arima_data_chart = Data.arima_data_chart;
+                const arimadata = JSON.parse(Data.arima_data);
+
 
                 $("#img_average_chart").attr("src", "data:image/png;base64," + average_chart);
                 $("#img_linear_chart").attr("src", "data:image/png;base64," + linear_chart);
+                $("#img_arima_chart").attr("src", "data:image/png;base64," + arima_data_chart);
                                 
                 let trhtml = "";
                 averagedata.forEach((el) => {
@@ -74,13 +100,20 @@
                     trhtml += trTag;
                 })
                 $("#averageData").html(trhtml);
-                console.log(lineardata)
+               
                 trhtml = "";
                 lineardata.forEach((el) => {
                     let trTag = `<tr><td>${Big3Common.Util.MonthDate(el.order_month)}</td ><td>${Big3Common.Util.Money(el.buy_amt)}</td><td>${el.order_dt_num}</td></tr >`;
                     trhtml += trTag;
                 })
                 $("#linearData").html(trhtml);
+
+                trhtml = "";
+                arimadata.forEach((el) => {
+                    let trTag = `<tr><td>${Big3Common.Util.MonthDate(el.order_month2)}</td ><td>${Big3Common.Util.Money(el.buy_amt)}</td><td>-</td></tr >`;
+                    trhtml += trTag;
+                })
+                $("#ariamData").html(trhtml);
 
                 $("#containers").show();
             }
