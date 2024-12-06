@@ -35,10 +35,16 @@ def getorgmember():
     result=""
     try:
         (n_count,not_n_count) =get_orm_member()
-        build_member=get_build_member()
-        build_sales=get_build_sales()
-        build_sales_month=get_build_sales_month()
+        com.user_print("가입자분포현황",'#', f"\n 플랫폼 가입자: {n_count} 스마트노트 거입자: {not_n_count}")
         
+        build_member=get_build_member()
+        com.user_print("상가별분포",'#',build_member.head())
+
+        build_sales=get_build_sales()
+        com.user_print("건물별 매출현황",'#',build_sales.head())
+
+        build_sales_month=get_build_sales_month()
+        com.user_print("건물별 매출추이",'#',build_sales_month.head())
 
         piechart=com.genpiechart(
                 ['플랫폼가입자','스마트노트가입자'],
@@ -79,6 +85,7 @@ def getsocaildata(from_value,to_value):
     try:
         social_network=get_social_network(int16(from_value),int16(to_value))
         networkchart=com.socalnetworkchart(social_network)         
+        com.user_print("도매와 소매의 Socail N/W Analysis",'#',social_network.head())
         result={
                  "result":"success",
                  "networkchart":networkchart,
@@ -140,7 +147,6 @@ def getaverageprediction():
         #ARIMA 예측
         df3=get_prediction_data()
         (df3,forecast,forecast_value)=arima_prediction_data(df3)
-        print(df3.head())
         arima_data_chart=com.arimapredictionchart(df3,forecast)
         new_row3 = {
             "bld_name": "디오트",
@@ -157,7 +163,6 @@ def getaverageprediction():
                  "arima_data_chart":arima_data_chart,
                  "arima_data":pd.concat([df3, pd.DataFrame([new_row3])], ignore_index=True).to_json(orient='records')
                }
-        
     except  Exception as err:
         result={"result":"fail",'error': '%s' %(err)}
     
